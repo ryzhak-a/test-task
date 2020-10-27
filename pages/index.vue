@@ -1,53 +1,50 @@
 <template>
   <section class="section">
-    <div class="columns is-mobile">
-      <card
-        title="Free"
-        icon="github"
-      >
-        Open source on <a href="https://github.com/buefy/buefy">
-          GitHub
-        </a>
-      </card>
+    <div class="columns">
+      <span class="column">
+        Shifts
+      </span>
 
-      <card
-        title="Responsive"
-        icon="cellphone-link"
-      >
-        <b class="has-text-grey">
-          Every
-        </b> component is responsive
-      </card>
-
-      <card
-        title="Modern"
-        icon="alert-decagram"
-      >
-        Built with <a href="https://vuejs.org/">
-          Vue.js
-        </a> and <a href="http://bulma.io/">
-          Bulma
-        </a>
-      </card>
-
-      <card
-        title="Lightweight"
-        icon="arrange-bring-to-front"
-      >
-        No other internal dependency
-      </card>
+      <div class="column">
+        <b-button
+          type="is-dark"
+          size="is-medium"
+          @click="OPEN_DRAWER(null)"
+          :disabled="isDrawerOpen"
+        >
+          Add shift
+        </b-button>
+      </div>
     </div>
+
+    <template v-if="shifts.length">
+      <Shift
+        v-for="shift in shifts"
+        :shift="shift"
+      />
+    </template>
+
+    <template v-else>
+      No shifts
+    </template>
   </section>
 </template>
 
 <script>
-import Card from '~/components/Card'
+import { mapMutations, mapState } from 'vuex';
+import Shift from '~/components/shift';
 
 export default {
   name: 'HomePage',
-
-  components: {
-    Card
+  components: { Shift },
+  computed: mapState({
+    shifts: state => state.shifts.shifts,
+    isDrawerOpen: state => state.drawer.isDrawerOpen
+  }),
+  methods: {
+    ...mapMutations({
+      OPEN_DRAWER: 'drawer/OPEN_DRAWER'
+    })
   }
-}
+};
 </script>
